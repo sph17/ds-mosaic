@@ -1,2 +1,2 @@
 # ds-mosaic
- generation of mosaic genome/exome files
+ Generation of mosaic genome/exome files given two CRAM/BAM genome/exome files.
