@@ -1,2 +1,2 @@
 # ds-mosaic
- generation of mosaic exome files
+ generation of mosaic genome/exome files
