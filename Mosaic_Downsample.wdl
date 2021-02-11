@@ -107,10 +107,10 @@ workflow downSampling_mosaic {
   if (process_downsample_custom && run_downsample_custom) {
     call ds2.downSampling_02 {
       input :
-        fastq_1_file_1 = select_first([downSampling_1.fastq_1,]), #.1.fastq file for first fastq file
-        fastq_1_file_2 = select_first([downSampling_1.fastq_2,]), #.2.fastq file for first fastq file
-        fastq_2_file_1 = select_first([downSampling_2.fastq_1,]), #.1.fastq file for second fastq file
-        fastq_2_file_2 = select_first([downSampling_2.fastq_2,]), #.1.fastq file for second fastq file
+        fastq_1_file_1 = select_first([downSampling_1.fastq_1,]), #.1.fastq file for first sample fastq file
+        fastq_1_file_2 = select_first([downSampling_1.fastq_2,]), #.2.fastq file for first sample fastq file
+        fastq_2_file_1 = select_first([downSampling_2.fastq_1,]), #.1.fastq file for second sample fastq file
+        fastq_2_file_2 = select_first([downSampling_2.fastq_2,]), #.1.fastq file for second sample fastq file
         downsample_docker = downsample_docker,
         reference_fasta = reference_fasta,
         ref_amb = ref_amb,
@@ -120,9 +120,9 @@ workflow downSampling_mosaic {
         ref_sa = ref_sa,
         ref_fai = ref_fai,
         ref_dict = ref_dict,
-        original_cram_or_bam_file_read_groups = select_first([downSampling_1.read_groups,]), #puts back readgroup from first downsample file
+        original_cram_or_bam_file_read_groups = select_first([downSampling_1.read_groups,]), #puts back readgroup from first sample file
         intervals_genome = intervals_genome,
-        sample_ID = sample_ID,
+        sample_ID = sample_ID, #the name you want to call your new in silico mix sample
         gatk4_jar_override = gatk4_jar_override,
         gatk_docker = gatk_docker,
         runtime_attr_realign = runtime_attr_realign,
@@ -135,14 +135,16 @@ workflow downSampling_mosaic {
   }
 
   output {
-    
+    #sample 1/A
     File? fastq_1A = downSampling_1.fastq_1
     File? fastq_2A = downSampling_1.fastq_2
     File? read_groups_A = downSampling_1.read_groups
+    #sample 2/B
     File? fastq_1B = downSampling_2.fastq_1
     File? fastq_2B = downSampling_2.fastq_2
     File? read_groups_B = downSampling_2.read_groups
 
+    #sample in-silico mix
     File? markdup_metrics_custom = downSampling_02.markdup_metrics
     File? sorted_cram_custom = downSampling_02.sorted_cram
     File? crai_file_custom = downSampling_02.crai_file

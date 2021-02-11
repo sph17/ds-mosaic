@@ -48,9 +48,8 @@ workflow downSampling_02 {
   }
 
   parameter_meta {
-    original_cram_or_bam_file_read_groups: "The original cram file's read group extracted, it is needed to re-add RG."
+    original_cram_or_bam_file_read_groups: "The original cram file's read group extracted from the first sample, it is needed to re-add RG."
     reference_fasta: ".fasta file with reference used to align bam or cram file"
-    fastq_file_: "paired .fastq file to downsample from."
     fastq_1_file_1: "<sample_name>.1.fastq file of FIRST sample in silico mix"
     fastq_1_file_2: "<sample_name>.2.fastq file of FIRST sample in silico mix"
     fastq_2_file_1: "<sample_name>.1.fastq file of SECOND sample in silico mix"
@@ -232,13 +231,13 @@ task combineAndRandomSort {
 
     #combines two downsampled fastq files and then randomly sort combined file prior to realignment
 
-    cat ~{fastq_1_file_1} ~{fastq_2_file_1} > ~{combined_fastq_1_name}
+    cat ~{fastq_1_file_1} ~{fastq_2_file_1} > ~{combined_fastq_1_name} #combine both sample's _1 file
 
-    cat ~{fastq_1_file_2} ~{fastq_2_file_2} > ~{combined_fastq_2_name}
+    cat ~{fastq_1_file_2} ~{fastq_2_file_2} > ~{combined_fastq_2_name} #combine both sample's _2 file
 
-    fastq-sort -R --seed=~{seed} ~{combined_fastq_1_name} > ~{randomized_fastq_1_name}
+    fastq-sort -R --seed=~{seed} ~{combined_fastq_1_name} > ~{randomized_fastq_1_name} #randomize concatenated _1.fastq file
 
-    fastq-sort -R --seed=~{seed} ~{combined_fastq_2_name} > ~{randomized_fastq_2_name}
+    fastq-sort -R --seed=~{seed} ~{combined_fastq_2_name} > ~{randomized_fastq_2_name} #randomize concatenated _2.fastq file
 
   >>>
 
