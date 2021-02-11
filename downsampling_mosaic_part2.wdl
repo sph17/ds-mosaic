@@ -51,6 +51,10 @@ workflow downSampling_02 {
     original_cram_or_bam_file_read_groups: "The original cram file's read group extracted, it is needed to re-add RG."
     reference_fasta: ".fasta file with reference used to align bam or cram file"
     fastq_file_: "paired .fastq file to downsample from."
+    fastq_1_file_1: "<sample_name>.1.fastq file of FIRST sample in silico mix"
+    fastq_1_file_2: "<sample_name>.2.fastq file of FIRST sample in silico mix"
+    fastq_2_file_1: "<sample_name>.1.fastq file of SECOND sample in silico mix"
+    fastq_2_file_2: "<sample_name>.2.fastq file of SECOND sample in silico mix"
   }
 
   meta {
@@ -64,10 +68,10 @@ workflow downSampling_02 {
   #################################################################################
   call combineAndRandomSort{
     input : 
-      fastq_1_file_1 = fastq_1_file_1,  #.1.fastq file of FIRST file
-      fastq_1_file_2 = fastq_1_file_2,  #.2.fastq file of FIRST file
-      fastq_2_file_1 = fastq_2_file_1,  #.1.fastq file of SECOND file
-      fastq_2_file_2 = fastq_2_file_2,  #.2.fastq file of SECOND file
+      fastq_1_file_1 = fastq_1_file_1,  #.1.fastq file of FIRST sample in silico mix
+      fastq_1_file_2 = fastq_1_file_2,  #.2.fastq file of FIRST sample in silico mix
+      fastq_2_file_1 = fastq_2_file_1,  #.1.fastq file of SECOND sample in silico mix
+      fastq_2_file_2 = fastq_2_file_2,  #.2.fastq file of SECOND sample in silico mix
       sample_ID = sample_ID,
       seed = select_first([seed_override, 16750]),
       downsample_docker = downsample_docker,
